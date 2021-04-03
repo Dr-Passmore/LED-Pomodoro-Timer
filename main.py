@@ -81,7 +81,7 @@ def lunch():
            picounicorn.set_pixel(x, y, r, g, b)
            #Switch off lunch mode
            if (picounicorn.is_pressed(picounicorn.BUTTON_Y)):
-               break 
+               break
            #Frequency of loop. This creates a nice sparkle effect 
            utime.sleep(0.01)
         
@@ -89,9 +89,44 @@ def lunch():
         for x in range(16):
                 for y in range(7):
                     picounicorn.set_pixel(x, y, 0, 0, 0)
-                    
+
+def meeting():
+    # Set variables
+    w = picounicorn.get_width()
+    h = picounicorn.get_height()
+    while not(picounicorn.is_pressed(picounicorn.BUTTON_Y)):
+    #Sets pixels to Rainbow pattern
+        for x in range(w):
+            for y in range(h):
+                if y == 0:
+                    r,g,b = 255,0,0 #Red
+                elif y == 1:
+                    r,g,b = 0,255,0 #Green
+                elif y == 2:
+                    r,g,b = 0,0,255 #Blue
+                elif y == 3:
+                    r,g,b = 0,255,255 #cyan
+                elif y == 4:
+                    r,g,b = 255,0,255 #Magenta
+                elif y == 5:
+                    r,g,b = 255,255,0 #Yellow
+                elif y == 6:
+                    r,g,b = 255,255,255 #White
+                
+                picounicorn.set_pixel(x, y, r, g, b)
+                if (picounicorn.is_pressed(picounicorn.BUTTON_Y)):
+                    break
+                utime.sleep(0.05)
+        
+            
+        # Clear the display
+        for x in range(16):
+                for y in range(7):
+                    picounicorn.set_pixel(x, y, 0, 0, 0)
+    
 def clear():
-    #Clears display - Added as I noticed at power on some LEDs previously on may remain on. This enables you to clear down the display without activating pomocycle or lunch processes
+    #Clears display
+        #Added as I noticed at power on some LEDs previously on may remain on. This enables you to clear down the display without activating pomocycle, lunch, or meeting
     for x in range(16):
                 for y in range(7):
                     picounicorn.set_pixel(x, y, 0, 0, 0)
@@ -100,7 +135,10 @@ def clear():
 while True:
     while picounicorn.is_pressed(picounicorn.BUTTON_X):
         pomocycle()
-    while picounicorn.is_pressed(picounicorn.BUTTON_A): 
+    while picounicorn.is_pressed(picounicorn.BUTTON_A):
         lunch()
+    while picounicorn.is_pressed(picounicorn.BUTTON_B):
+        meeting()
     while picounicorn.is_pressed(picounicorn.BUTTON_Y):
         clear()
+    
