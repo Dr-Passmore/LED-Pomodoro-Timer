@@ -1,5 +1,6 @@
 import math
 import utime
+import urandom
 import picounicorn
 
 picounicorn.init()
@@ -56,7 +57,50 @@ def pomocycle():
     for x in range(16):
         for y in range(7):
             picounicorn.set_pixel(x, y, 0, 0, 0)
+            
+def lunch():
+    # Set variables
+    r = 0
+    g = 0
+    b = 0
+    column = 15
+    row = 6
+    while not(picounicorn.is_pressed(picounicorn.BUTTON_Y)):
+    #Sets all pixels to off
+        for x in range(16):
+            for y in range(7):
+                picounicorn.set_pixel(x, y, r, g, b)
+        
+        #Randomises the pixels filling up the LEDs and switching individual colours
+        while True: 
+           x = urandom.randint(0,15)
+           y = urandom.randint(0,6)
+           r = urandom.randint(0,255)
+           g = urandom.randint(0,255)
+           b = urandom.randint(0,255)
+           picounicorn.set_pixel(x, y, r, g, b)
+           #Switch off lunch mode
+           if (picounicorn.is_pressed(picounicorn.BUTTON_Y)):
+               break 
+           #Frequency of loop. This creates a nice sparkle effect 
+           utime.sleep(0.01)
+        
+        # Clear the display
+        for x in range(16):
+                for y in range(7):
+                    picounicorn.set_pixel(x, y, 0, 0, 0)
+                    
+def clear():
+    #Clears display - Added as I noticed at power on some LEDs previously on may remain on. This enables you to clear down the display without activating pomocycle or lunch processes
+    for x in range(16):
+                for y in range(7):
+                    picounicorn.set_pixel(x, y, 0, 0, 0)
+        
 
 while True:
     while picounicorn.is_pressed(picounicorn.BUTTON_X):
         pomocycle()
+    while picounicorn.is_pressed(picounicorn.BUTTON_A): 
+        lunch()
+    while picounicorn.is_pressed(picounicorn.BUTTON_Y):
+        clear()
